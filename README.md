@@ -50,11 +50,21 @@ Visit [http://localhost:4200](http://localhost:4200)
 
 #### Build and Run
 
-From the project root:
+1. Build the Docker images for both frontend and backend:
 
-```bash
-docker-compose -f PDFReader-Angular/docker-compose.yml up --build
-```
+   ```bash
+   cd PDFReader-Angular
+   docker build -t frontend .
+   cd ../PDFReader-BackEnd
+   docker build -t backend .
+   ```
+
+2. Start the services using Docker Compose from the Angular app directory:
+
+   ```bash
+   cd ../PDFReader-Angular
+   docker-compose up -d
+   ```
 
 #### ⚠️ Important: API Token Configuration
 
