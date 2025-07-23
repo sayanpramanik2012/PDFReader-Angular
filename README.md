@@ -1,59 +1,127 @@
 # Docreader
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.1.
+Docreader is a full-stack PDF reading and processing application, consisting of an Angular frontend and a Node.js backend. The backend leverages AI APIs (e.g., Gemini) for document analysis.
 
-## Development server
+---
 
-To start a local development server, run:
+## Project Structure
+
+```
+PDFReader-Angular/      # Angular frontend
+PDFReader-BackEnd/      # Node.js backend
+```
+
+---
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18+ recommended)
+- [npm](https://www.npmjs.com/)
+- [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
+
+---
+
+## Setup Instructions
+
+### 1. Local Development (without Docker)
+
+#### Backend
 
 ```bash
+cd PDFReader-BackEnd
+npm install
+# Create a .env file and set GEMINI_API_KEY=your_api_key
+node server.js
+```
+
+#### Frontend
+
+```bash
+cd PDFReader-Angular
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Visit [http://localhost:4200](http://localhost:4200)
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 2. Dockerized Setup
 
-```bash
-ng generate component component-name
-```
+#### Build and Run
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+From the project root:
 
 ```bash
-ng generate --help
+docker-compose -f PDFReader-Angular/docker-compose.yml up --build
 ```
 
-## Building
+#### ⚠️ Important: API Token Configuration
 
-To build the project run:
+- The backend requires a `GEMINI_API_KEY` environment variable. You can set it directly in `docker-compose.yml` or via a `.env` file in `PDFReader-BackEnd`.
+- **If your Angular frontend also needs access to the token (e.g., for SSR or API calls), add the following under `angular-frontend` in `PDFReader-Angular/docker-compose.yml`:**
+  ```yaml
+  environment:
+    - GEMINI_API_KEY=your_api_key_here
+  ```
+- Never commit your real API keys to version control.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Environment Variables
 
-## Running unit tests
+- `GEMINI_API_KEY` (required by backend, possibly frontend): Your Gemini/AI API key.
+- For local dev, create a `.env` file in `PDFReader-BackEnd`:
+  ```env
+  GEMINI_API_KEY=your_api_key_here
+  ```
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+## Scripts & Useful Commands
 
-## Running end-to-end tests
+### Angular Frontend
 
-For end-to-end (e2e) testing, run:
+- `npm start` / `ng serve` — Start dev server
+- `ng build` — Build for production
+- `ng test` — Run unit tests
+- `ng e2e` — Run end-to-end tests
 
-```bash
-ng e2e
-```
+### Node Backend
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- `node server.js` — Start backend server
+
+---
+
+## Testing
+
+### Frontend
+
+- **Unit tests:**
+  ```bash
+  ng test
+  ```
+- **End-to-end tests:**
+  ```bash
+  ng e2e
+  ```
+  (Configure your preferred e2e framework if not set up.)
+
+### Backend
+
+- No test scripts defined by default. Add tests as needed.
+
+---
 
 ## Additional Resources
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- [Angular CLI Documentation](https://angular.dev/tools/cli)
+- [Node.js Documentation](https://nodejs.org/en/docs)
+- [Docker Compose Docs](https://docs.docker.com/compose/)
+
+---
+
+## Notes
+
+- For production, ensure all secrets and API keys are managed securely (e.g., with Docker secrets or environment managers).
+- For any issues, consult the respective documentation or raise an issue in this repository.
