@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  node-backend:
+    image: backend
+    container_name: node-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - GEMINI_API_KEY=Key
+  angular-frontend:
+    image: frontend
+    container_name: angular-frontend
+    ports:
+      - "8080:80"

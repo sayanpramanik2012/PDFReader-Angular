@@ -1,0 +1,59 @@
+<div class="chat-container">
+  <div class="chat-header">
+    <h2><i class="fas fa-file-pdf"></i> PDF Q&A Assistant</h2>
+    <p class="subtitle">Upload a PDF and ask questions about its content</p>
+  </div>
+
+  <div class="upload-section">
+    <div class="file-upload-wrapper">
+      <label class="file-upload-label">
+        <input
+          type="file"
+          (change)="onFileSelected($event)"
+          accept=".pdf"
+          class="file-input"
+        />
+        <span class="file-upload-button"
+          ><i class="fas fa-cloud-upload-alt"></i> Choose PDF</span
+        >
+        <span class="file-upload-name">{{
+          selectedFile?.name || "No file selected"
+        }}</span>
+      </label>
+      <button
+        (click)="uploadPDF()"
+        [disabled]="!selectedFile"
+        class="upload-button"
+      >
+        <i class="fas fa-upload"></i> Upload
+      </button>
+    </div>
+    <p class="status-message">{{ message }}</p>
+  </div>
+
+  <div *ngIf="pdfUploaded" class="chat-wrapper">
+    <div class="chat-messages">
+      <div *ngFor="let msg of chat" [ngClass]="'message-' + msg.type">
+        <div class="message-content">
+          <div class="message-sender">
+            {{ msg.type === "user" ? "You" : "AI Assistant" }}
+          </div>
+          <div class="message-text">{{ msg.text }}</div>
+          <!-- <div class="message-time">{{ msg.timestamp | date:'shortTime' }}</div> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="question-input">
+      <input
+        [(ngModel)]="question"
+        placeholder="Ask a question about the PDF..."
+        (keyup.enter)="sendQuestion()"
+        class="question-field"
+      />
+      <button (click)="sendQuestion()" class="send-button">
+        <i class="fas fa-paper-plane"></i> Send
+      </button>
+    </div>
+  </div>
+</div>
